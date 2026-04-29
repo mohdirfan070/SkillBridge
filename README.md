@@ -1,110 +1,120 @@
-# 📘 SKillBridge FullStack Attendance & Batch Management System
+# SkillBridge – FullStack Attendance & Batch Management System
 
-A role-based attendance and batch management platform built with **React (frontend)**, **Express.js (backend)**, and **PostgreSQL (database)**. Authentication is powered by **Clerk**, with strict role-based access control enforced across all routes.
-
----
-
-## 🔗 Live URLs
-- **Frontend (React + Vite)**: https://skillbridge-self-six.vercel.app  
-- **Backend (Express + Postgres)**: https://skillbridge-pcr3.onrender.com  
-- **API Base URL**: `https://skillbridge-pcr3.onrender.com/api`
+This project is a role-based attendance and batch management system. It’s built with **React (frontend)**, **Express.js (backend)**, and **PostgreSQL** for the database. Authentication is handled by **Clerk**, and I’ve tried to enforce strict role-based access control across all routes.
 
 ---
 
-## 👥 Test Accounts
-Use these credentials to log in and test each role:
+## Live URLs
+- Frontend: https://skillbridge-self-six.vercel.app  
+- Backend: https://skillbridge-pcr3.onrender.com  
+- API Base: `https://skillbridge-pcr3.onrender.com/api`
 
-| Role                | username               | Password   |
-|---------------------|------------------------|------------|
-| Institution Admin   | institution1           | 9538321498 |
-| Trainer             | trainer1               | 9538321498 |
-| Student             | student1               | 9538321498 |
-| Programme Manager   | programmemanager1      | 9538321498 |
-| Monitoring Officer  | monitoringofficer1     | 9538321498 |
+---
+
+## Test Accounts
+Here are some demo accounts you can use to check out the different dashboards:
+
+| Role                | Username             | Password   |
+|---------------------|----------------------|------------|
+| Institution Admin   | institution1         | 9538321498 |
+| Trainer             | trainer1             | 9538321498 |
+| Student             | student1             | 9538321498 |
+| Programme Manager   | programmemanager1    | 9538321498 |
+| Monitoring Officer  | monitoringofficer1   | 9538321498 |
 
 ---
 
 ## Setup Instructions
 
 ### Prerequisites
-- Node.js (>= 18)
-- PostgreSQL (>= 14)
-- npm 
+- Node.js (v18 or above)
+- PostgreSQL (v14 or above)
+- npm
 
-### Steps
-1. **Clone the repo**
+### Steps to run locally
+1. Clone the repo:
+   ```bash
    git clone https://github.com/mohdirfan070/SkillBridge.git
-   
-
-Backend Setup
+Backend setup:
 
 bash
 cd backend
 npm install
-cp .env
-PORT 
-CLIENT_URL 
-DATABASE_URL 
+cp .env.example .env
+Fill in:
+
+PORT
+
+CLIENT_URL
+
+DATABASE_URL
+
 CLERK_PUBLISHABLE_KEY
+
 CLERK_SECRET_KEY
+
+Then run:
+
+bash
 npm run dev
-
-
-Frontend Setup
+Frontend setup:
 
 bash
 cd frontend
 npm install
-cp .env
+cp .env.example .env
+Fill in:
+
 VITE_CLERK_PUBLISHABLE_KEY
+
 VITE_BACKEND_URL
 
+Then run:
+
+bash
 npm run dev
-
-
-Database Migration
+Database:
 
 sql
-CREATE DATABASE attendance_db;
--- Run schema.sql or use migration tool
-🗂 Schema Decisions defined in the **database.sql** 
-Users Table: single table with role field (student, trainer, institution_admin, programme_manager, monitoring_officer).
+CREATE DATABASE skillbridge;
+Run the schema from database.sql or use your migration tool.
 
-Institutions Table: each institution created by an admin.
+Schema Decisions
+Users: single table with a role field (student, trainer, institution_admin, programme_manager, monitoring_officer).
 
-Batches Table: linked to institution, many‑to‑many with trainers and students via batch_trainers and batch_students.
+Institutions: created by admins.
 
-Sessions Table: linked to batch, created by trainers.
+Batches: linked to institutions, many-to-many with trainers and students.
 
-Attendance Table: unique (session_id, student_id) constraint ensures one record per student per session.
+Sessions: linked to batches, created by trainers.
 
-👉 This design enforces least privilege and clean separation of responsibilities.
+Attendance: unique (session_id, student_id) constraint so each student can only mark once per session.
 
-🛠 Stack Choices
-Frontend: React + Clerk for auth, Axios for API calls, TailwindCSS for UI.
+This setup keeps things simple and enforces least privilege.
+
+Tech Stack
+Frontend: React + Clerk for auth, Axios for API calls, TailwindCSS for styling.
 
 Backend: Express.js, PostgreSQL, pg library.
 
-Auth: Clerk tokens validated in middleware.
+Auth: Clerk middleware validates tokens.
 
-Why Postgres: strong relational integrity, easier joins for summaries.
+I went with Postgres because joins and summaries are easier to handle compared to NoSQL. Tailwind was chosen just to speed up UI work.
 
-Why Tailwind: rapid UI prototyping, consistent design system.
-
-✅ Project Status
-Fully Working:
+Project Status
+Fully working:
 
 Role-based dashboards (Student, Trainer, Institution Admin, Programme Manager, Monitoring Officer).
 
-Invite link flows for batch/session joining.
+Invite link flow for joining batches/sessions.
 
 Attendance marking with time-based button logic.
 
 Institution and programme summaries.
 
-Partially Done:
+Partially done:
 
-Late attendance marking (logic stubbed, not fully implemented).
+Late attendance marking (logic is stubbed but not finished).
 
 Monitoring Officer dashboard (basic summary only, no drill-down).
 
@@ -112,9 +122,9 @@ Skipped:
 
 Email notifications.
 
-Advanced analytics (charts, graphs).
+Analytics (charts, graphs).
 
-Deployment CI/CD pipeline.
+CI/CD pipeline.
 
-🔮 Reflection
-With more time, I’d implement real-time updates via WebSockets so attendance and session changes reflect instantly across dashboards without manual refresh. This would make the system feel more dynamic and collaborative.
+Reflection
+If I had more time, I’d add real-time updates with WebSockets so trainers and admins don’t have to refresh to see attendance changes. That would make the system feel more dynamic and collaborative.
