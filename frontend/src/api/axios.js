@@ -8,7 +8,7 @@ const api = axios.create({
   },
 });
 
-// ✅ attach Clerk token dynamically
+// ✅ attach Clerk token dynamically1
 api.interceptors.request.use(
   async (config) => {
     try {
