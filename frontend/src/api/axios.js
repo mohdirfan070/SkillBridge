@@ -1,45 +1,38 @@
-import axios from "axios"
+import axios from "axios";
 
-// Create an Axios instance
 const api = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL, // backend base URL
-  withCredentials: true,                // include cookies if needed
+  baseURL: import.meta.env.VITE_BACKEND_URL,
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// Optional: request interceptor (e.g., attach token)
+// ✅ attach Clerk token dynamically
 api.interceptors.request.use(
-  (config) => {
-    // Example: attach token from localStorage
-    const token = localStorage.getItem("token");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+  async (config) => {
+    try {
+      // 🔥 get token from Clerk session
+      const token = await window.Clerk?.session?.getToken();
+
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    } catch (err) {
+      console.error("Token fetch error:", err);
     }
+
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-// Optional: response interceptor (e.g., handle errors globally)
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    console.error("API Error:", error.response?.data || error.message);
-    return Promise.reject(error);
-  }
-);
-
+export default api;
 
 export const setAuthToken = (token) => {
-  api.interceptors.request.use(async (config) => {
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  });
+  if (token) {
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  } else {
+    delete api.defaults.headers.common["Authorization"];
+  }
 };
-
-
-export default api;

@@ -7,7 +7,7 @@ function requireRole(...roles) {
     try {
       const { userId } = getAuth(req);
       if (!userId) {
-        return res.status(401).json({ message: "Unauthorized" });
+        return res.status(401).json({ message: "Unauthorized" , userId});
       }
 
       // Look up user in DB by Clerk ID

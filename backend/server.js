@@ -11,7 +11,7 @@ const { clerkMiddleware } = require("@clerk/express");
 // CORS + BODY PARSER
 app.use(
     cors({
-        origin:"https://skillbridge-self-six.vercel.app",
+        origin:["https://skillbridge-self-six.vercel.app","http://localhost:5173"],
         credentials: true,
     })
 );
